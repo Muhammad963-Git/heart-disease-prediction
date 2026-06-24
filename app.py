@@ -2,9 +2,10 @@ import streamlit as st
 import pickle
 import numpy as np
 
-# Load model
+# Load model and scaler
 
 model = pickle.load(open("heart_model.pkl", "rb"))
+scaler = pickle.load(open("scaler.pkl", "rb"))
 
 st.set_page_config(
 page_title="Heart Disease Predictor",
@@ -23,7 +24,7 @@ sex = st.selectbox(
 )
 
 cp = st.selectbox(
-"Chest Pain Type",
+"Chest Pain Type (cp)",
 [0, 1, 2, 3]
 )
 
@@ -67,7 +68,8 @@ oldpeak = st.number_input(
 "Old Peak",
 min_value=0.0,
 max_value=10.0,
-value=1.0
+value=1.0,
+step=0.1
 )
 
 slope = st.selectbox(
@@ -90,7 +92,7 @@ if st.button("Predict"):
 ```
 sex_value = 1 if sex == "Male" else 0
 
-features = np.array([[
+patient_data = np.array([[
     age,
     sex_value,
     cp,
@@ -106,10 +108,18 @@ features = np.array([[
     thal
 ]])
 
-prediction = model.predict(features)
+patient_data = scaler.transform(patient_data)
 
-if prediction[0] == 1:
+prediction = model.predict(patient_data)[0]
+
+probability = model.predict_proba(patient_data)[0][1]
+
+st.subheader("Result")
+
+if prediction == 1:
     st.error("⚠️ Heart Disease Detected")
 else:
     st.success("✅ No Heart Disease Detected")
+
+st.write(f"Risk Score: {probability * 100:.2f}%")
 ```
