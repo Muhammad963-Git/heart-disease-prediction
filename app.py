@@ -89,35 +89,35 @@ thal = st.selectbox(
 
 if st.button("Predict"):
 
-sex_value = 1 if sex == "Male" else 0
+    sex_value = 1 if sex == "Male" else 0
 
-patient_data = np.array([[
-    age,
-    sex_value,
-    cp,
-    trestbps,
-    chol,
-    fbs,
-    restecg,
-    thalach,
-    exang,
-    oldpeak,
-    slope,
-    ca,
-    thal
-]])
+    patient_data = np.array([[
+        age,
+        sex_value,
+        cp,
+        trestbps,
+        chol,
+        fbs,
+        restecg,
+        thalach,
+        exang,
+        oldpeak,
+        slope,
+        ca,
+        thal
+    ]])
 
-patient_data = scaler.transform(patient_data)
+    patient_data = scaler.transform(patient_data)
 
-prediction = model.predict(patient_data)[0]
+    prediction = model.predict(patient_data)[0]
 
-probability = model.predict_proba(patient_data)[0][1]
+    probability = model.predict_proba(patient_data)[0][1]
 
-st.subheader("Result")
+    st.subheader("Result")
 
-if prediction == 1:
-    st.error("⚠️ Heart Disease Detected")
-else:
-    st.success("✅ No Heart Disease Detected")
+    if prediction == 1:
+        st.error("⚠️ Heart Disease Detected")
+    else:
+        st.success("✅ No Heart Disease Detected")
 
-st.write(f"Risk Score: {probability * 100:.2f}%")
+    st.write(f"Risk Score: {probability * 100:.2f}%")
