@@ -89,7 +89,6 @@ thal = st.selectbox(
 
 if st.button("Predict"):
 
-```
 sex_value = 1 if sex == "Male" else 0
 
 patient_data = np.array([[
@@ -122,4 +121,3 @@ else:
     st.success("✅ No Heart Disease Detected")
 
 st.write(f"Risk Score: {probability * 100:.2f}%")
-```
